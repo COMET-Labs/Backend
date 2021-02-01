@@ -1,5 +1,6 @@
 const express = require('express');
 const authRouter = express.Router();
+const axios = require('axios');
 
 authRouter.post('/signup', (req, res) => {
   res.status(200).json({
@@ -20,9 +21,19 @@ authRouter.post('/googlelogin', (req, res) => {
 });
 
 authRouter.post('/linkedinlogin', (req, res) => {
-  res.status(200).json({
-    result: 'Login with linkedIN will appear here soon'
-  });
+  const { access_token } = req.body;
+  let auth = 'Bearer ' + access_token;
+  axios
+    .get('https://api.linkedin.com/v2/me', {
+      method: 'GET',
+      headers: { Connection: 'Keep-Alive', Authorization: auth }
+    })
+    .then(async (usr) => {
+      console.log(usr);
+      res.status(200).json({
+        result: 'Success'
+      });
+    });
 });
 
 module.exports = authRouter;
