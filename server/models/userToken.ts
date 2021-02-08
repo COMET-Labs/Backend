@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 const userTokenSchema = new mongoose.Schema(
   {
     user: {
-      // type: mongoose.Schema.Types.ObjectId,
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
+      // type: Number,
       ref: 'users'
     },
     refreshToken: {

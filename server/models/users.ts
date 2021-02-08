@@ -33,8 +33,8 @@ const userSchema = new mongoose.Schema(
       minlength: 8
     },
     contact: {
-      type: Number,
-      required: true
+      type: Number
+      // required: true
     },
     headline: {
       type: String
