@@ -7,6 +7,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       maxlength: 50
     },
+    isVerified: {
+      type: Boolean,
+      default: false
+    },
+    isVerifiedStudent: {
+      type: Boolean,
+      default: false
+    },
     instituteName: {
       type: String
     },

@@ -100,7 +100,8 @@ authRouter.post(
         } else {
           User.create({
             fullName: `${userData.data.localizedFirstName} ${userData.data.localizedLastName}`,
-            email: { personal: email }
+            email: { personal: email },
+            isVerified: true
           })
             .then(async (user) => {
               let accessToken = await tokenUtils.signAccessToken(user._id);
