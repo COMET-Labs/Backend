@@ -28,12 +28,16 @@ const userSchema = new mongoose.Schema(
       institute: {
         type: String,
         trim: true,
-        unique: 1
+        index: true,
+        unique: true,
+        sparse: true
       },
       personal: {
         type: String,
         trim: true,
-        unique: 1
+        index: true,
+        unique: true,
+        sparse: true
       }
     },
     hash_password: {
@@ -41,8 +45,11 @@ const userSchema = new mongoose.Schema(
       minlength: 8
     },
     contact: {
-      type: Number
+      type: Number,
       // required: true
+      index: true,
+      unique: true,
+      sparse: true
     },
     headline: {
       type: String
