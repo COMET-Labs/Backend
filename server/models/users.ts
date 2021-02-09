@@ -1,11 +1,19 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     fullName: {
       type: String,
       maxlength: 50
+    },
+    isVerified: {
+      type: Boolean,
+      default: false
+    },
+    isVerifiedStudent: {
+      type: Boolean,
+      default: false
     },
     instituteName: {
       type: String
@@ -33,8 +41,8 @@ const userSchema = mongoose.Schema(
       minlength: 8
     },
     contact: {
-      type: Number,
-      required: true
+      type: Number
+      // required: true
     },
     headline: {
       type: String
@@ -93,4 +101,5 @@ userSchema.methods = {
   }
 };
 
-module.exports = mongoose.model('user', userSchema);
+const Users = mongoose.model('user', userSchema);
+export default Users;
