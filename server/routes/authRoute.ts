@@ -10,10 +10,20 @@ const authRouter = express.Router();
 
 authRouter.post(
   '/signup',
-  (req, res) => {
-    res.status(200).json({
-      result: 'Signup Will Appear Here Soon'
-    });
+  (req, res, next) => {
+    User.create({
+      fullName: `${req.body.firstName} ${req.body.lastName}`,
+      password: req.body.password,
+      email: { personal: req.body.email }
+    })
+      .then((user) => {
+        res.status(200).json({
+          user: user
+        });
+      })
+      .catch((err) => {
+        next({ status: 401, message: 'You already have an account. Kindly Login' });
+      });
   },
   handleError
 );
