@@ -4,6 +4,7 @@ import UserToken from '../models/userToken';
 import User from '../models/users';
 import * as middleware from '../middleware/auth';
 import * as tokenUtils from '../utils/token';
+import * as mailUtils from '../utils/mail';
 import handleError from '../middleware/errorHandler';
 
 const authRouter = express.Router();
@@ -16,13 +17,48 @@ authRouter.post(
       password: req.body.password,
       email: { personal: req.body.email }
     })
-      .then((user) => {
+      .then(async (user) => {
+        let x = await mailUtils.sendPersonalOTP(user.email.personal, user._id);
+        console.log(x);
         res.status(200).json({
           user: user
         });
       })
       .catch((err) => {
         next({ status: 401, message: 'You already have an account. Kindly Login' });
+      });
+  },
+  handleError
+);
+
+authRouter.post(
+  '/verifypersonalmail',
+  (req, res, next) => {
+    User.findOne({ email: { personal: req.body.email } })
+      .then(async (user) => {
+        if (
+          user.otp.personal.value === req.body.otp &&
+          user.otp.personal.expire_time > Date.now()
+        ) {
+          User.updateOne(
+            { _id: user._id },
+            { isVerified: true, otp: { personal: { value: -1, expire_time: Date.now() } } }
+          )
+            .then((user) => {
+              res.status(200).json({
+                success: true
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+              next({ status: 401, message: 'Try Again' });
+            });
+        } else {
+          next({ status: 401, message: 'Wrong or Expired OTP' });
+        }
+      })
+      .catch((err) => {
+        next({ status: 401, message: 'The corresponding user is not available in database' });
       });
   },
   handleError

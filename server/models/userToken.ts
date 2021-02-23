@@ -1,9 +1,12 @@
 import mongoose from 'mongoose';
+export interface UserTokenDoc extends mongoose.Document {
+  user: mongoose.Schema.Types.ObjectId;
+  refreshToken: String;
+}
 const userTokenSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      // type: Number,
       ref: 'users'
     },
     refreshToken: {
@@ -12,5 +15,5 @@ const userTokenSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-const UserToken = mongoose.model('userToken', userTokenSchema);
+const UserToken = mongoose.model<UserTokenDoc>('userToken', userTokenSchema);
 export default UserToken;

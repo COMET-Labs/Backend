@@ -1,13 +1,6 @@
 {
-	"ignore": [
-		"**/*.test.ts",
-		"**/*.spec.ts",
-		".git",
-		"node_modules",
-		"dist",
-		".vscode"
-	],
-	"watch": ["."],
-	"exec": "ts-node -r dotenv/config index.ts",
-	"ext": "ts"
+  "ignore": ["**/*.test.ts", "**/*.spec.ts", ".git", "node_modules", "dist", ".vscode"],
+  "watch": ["."],
+  "exec": "ts-node -r dotenv/config index.ts",
+  "ext": "ts"
 }

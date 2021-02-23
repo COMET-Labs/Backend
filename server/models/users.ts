@@ -1,11 +1,55 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
+export interface UsersDoc extends mongoose.Document {
+  fullName?: String;
+  isVerified?: Boolean;
+  isVerifiedStudent?: Boolean;
+  instituteName?: String;
+  rollNumber?: String;
+  joiningYear?: Number;
+  email?: {
+    institute?: String;
+    personal?: String;
+  };
+  otp?: {
+    institute?: {
+      value: Number;
+      expire_time: Number;
+    };
+    personal?: {
+      value?: Number;
+      expire_time?: Number;
+    };
+  };
+  password?: String;
+  hash_password?: String;
+  contact?: Number;
+  headline?: String;
+  about?: String;
+  dp?: {
+    profile: String;
+    cover: String;
+  };
+  socialHandle?: {
+    twitter: String;
+    facebook: String;
+    instagram: String;
+    linkedin: String;
+    gitHub: String;
+    discord: String;
+  };
+  converations?: [
+    {
+      conversationID: mongoose.Schema.Types.ObjectId;
+    }
+  ];
+}
+
 const userSchema = new mongoose.Schema(
   {
     fullName: {
-      type: String,
-      maxlength: 50
+      type: String
     },
     isVerified: {
       type: Boolean,
@@ -38,6 +82,24 @@ const userSchema = new mongoose.Schema(
         index: true,
         unique: true,
         sparse: true
+      }
+    },
+    otp: {
+      institute: {
+        value: {
+          type: Number
+        },
+        expire_time: {
+          type: Number
+        }
+      },
+      personal: {
+        value: {
+          type: Number
+        },
+        expire_time: {
+          type: Number
+        }
       }
     },
     hash_password: {
@@ -108,5 +170,5 @@ userSchema.methods = {
   }
 };
 
-const Users = mongoose.model('user', userSchema);
+const Users = mongoose.model<UsersDoc>('user', userSchema);
 export default Users;
